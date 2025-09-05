@@ -14,21 +14,20 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const resend = new Resend(process.env.RESEND_API_KEY);
-
-  const { to, subject, html, text } = req.body;
-
   try {
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    const { to, subject, html, message } = req.body;
+
     const data = await resend.emails.send({
       from: 'Commissionize <noreply@commissionize.com>',
       to: to,
-      subject: subject,
-      html: html,
-      text: text
+      subject: subject || 'Message from Commissionize',
+      html: html || `<p>${message}</p>`
     });
     
     res.status(200).json({ success: true, id: data.id });
   } catch (error) {
+    console.error('Email error:', error);
     res.status(500).json({ success: false, error: error.message });
   }
 };
