@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
 
   try {
     const data = await resend.emails.send({
-      from: 'Commissionize <noreply@yourdomain.com>',
+      from: 'Commissionize <noreply@commissionize.com>',
       to: to,
       subject: subject,
       html: html,
